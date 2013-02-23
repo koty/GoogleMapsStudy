@@ -24,5 +24,21 @@ class app {
             map: map,
             title: "デズニーシー（行ったことない）"
         });
+
+
+        //吹き出しを作成します
+        var contentString = '吹き出しを設置してみました。</br>' +
+            '×ボタンで閉じてもマーカーをクリックすればまた開きます。';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString  //吹き出し内コメント
+        });
+
+        //吹き出しをオープンします
+        infowindow.open(map, marker1);
+
+        //クリックしたときに吹き出しがオープンするイベントを定義します
+        google.maps.event.addListener(marker1, 'click', function () {
+            infowindow.open(map, marker1);
+        });
     }
 }

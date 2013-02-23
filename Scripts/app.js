@@ -20,6 +20,14 @@
             map: map,
             title: "デズニーシー（行ったことない）"
         });
+        var contentString = '吹き出しを設置してみました。</br>' + '×ボタンで閉じてもマーカーをクリックすればまた開きます。';
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        infowindow.open(map, marker1);
+        google.maps.event.addListener(marker1, 'click', function () {
+            infowindow.open(map, marker1);
+        });
     };
     return app;
 })();
