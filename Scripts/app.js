@@ -24,10 +24,20 @@
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-        infowindow.open(map, marker1);
         google.maps.event.addListener(marker1, 'click', function () {
             infowindow.open(map, marker1);
         });
+        var kmlUrl = "https://maps.google.co.jp/maps/ms?hl=ja&ie=UTF8&brcurrent=3,0x601d805de6344499:0xf128a974072892c8,0&source=embed&authuser=0&msa=0&output=kml&msid=212296178296913481694.00049901c136c56005a6e";
+        var kmlLayer = new google.maps.KmlLayer(kmlUrl);
+        kmlLayer.setMap(map);
+        google.maps.event.addListener(kmlLayer, 'click', function (kmlEvent) {
+            var text = kmlEvent.featureData.description;
+            showInDiv(text);
+        });
+        function showInDiv(text) {
+            var sidediv = document.getElementById('contentWindow');
+            sidediv.innerHTML = text;
+        }
     };
     return app;
 })();
