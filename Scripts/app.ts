@@ -7,6 +7,7 @@ module app {
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
             $scope.startTime = "2000";
+            $scope.resultDiagrams = [];
             $scope.search = () => {
                 $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?"
                     + "start_busstopnm="  + encodeURIComponent($scope.fromBusStop)
@@ -14,7 +15,7 @@ module app {
                     + "&departure_datetime=20130226" + $scope.startTime
                     + "&format=js&callback=JSON_CALLBACK")
                 .success((data:any) => {
-                    $scope.resultStartTime = data.diagrams[0].diagram.avltime + data.diagrams[0].diagram.linename;
+                    $scope.resultDiagrams = data.diagrams;
                 })
                 .error((data:any) => {
                     console.log("fail");

@@ -5,9 +5,10 @@
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
             $scope.startTime = "2000";
+            $scope.resultDiagrams = [];
             $scope.search = function () {
                 $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=20130226" + $scope.startTime + "&format=js&callback=JSON_CALLBACK").success(function (data) {
-                    $scope.resultStartTime = data.diagrams[0].diagram.avltime + data.diagrams[0].diagram.linename;
+                    $scope.resultDiagrams = data.diagrams;
                 }).error(function (data) {
                     console.log("fail");
                     console.log(data);
