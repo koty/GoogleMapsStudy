@@ -5,23 +5,26 @@
     <title></title>
     <link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
 </head>
-<body data-ng-controller="app.searchBusByFromTo">
-    <p>
-        <input type="text" placeholder="出発バス停" data-ng-model="fromBusStop" />
-    </p>
-    <p>
-        <input type="text" placeholder="到着バス停" data-ng-model="toBusStop" />
-    </p>
-    <p>
-        <input type="text" placeholder="出発時刻" data-ng-model="startTime" />
-    </p>
-    <button data-ng-click="search()">検索！</button>
-    <p>
-        <span>出発時刻</span><span>{{resultStartTime}}</span>
-    </p>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
-    <script type="text/javascript" src="Scripts/app.js"></script>
-</body>
+    <body data-ng-controller="app.searchBusByFromTo">
+        <p>
+            <a href="http://www9264ui.sakura.ne.jp/yummy/?page_id=5" target="_blank">api仕様</a>
+        </p>
+        <p>
+            <input type="text" placeholder="出発バス停" data-ng-model="fromBusStop" />
+        </p>
+        <p>
+            <input type="text" placeholder="到着バス停" data-ng-model="toBusStop" />
+        </p>
+        <p>
+            <input type="text" placeholder="出発時刻" data-ng-model="startTime" />
+        </p>
+        <button data-ng-click="search()">検索！</button>
+        <p>
+            <span>出発時刻</span><span>{{resultStartTime}}</span>
+        </p>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
+        <script type="text/javascript" src="Scripts/app.js"></script>
+    </body>
 </html>

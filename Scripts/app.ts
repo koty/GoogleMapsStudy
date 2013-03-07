@@ -12,7 +12,7 @@ module app {
                     + "start_busstopnm="  + encodeURIComponent($scope.fromBusStop)
                     + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop)
                     + "&departure_datetime=20130226" + $scope.startTime
-                    + "&format=0&callback=JSON_CALLBACK")
+                    + "&format=js&callback=JSON_CALLBACK")
                 .success((data:any) => {
                     $scope.resultStartTime = data.diagrams[0].diagram.avltime + data.diagrams[0].diagram.linename;
                 })
