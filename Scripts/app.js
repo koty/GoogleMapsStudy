@@ -1,7 +1,27 @@
-﻿var app;
+﻿angular.module('albus', []).directive('autoComplete', function () {
+    return function (scope, iElement, iAttrs) {
+        scope.$watch(iAttrs.uiItems, function (values) {
+            iElement.autocomplete({
+                source: values,
+                select: function () {
+                    setTimeout(function () {
+                        iElement.trigger('input');
+                    }, 0);
+                }
+            });
+        }, true);
+    };
+});
+var app;
 (function (app) {
     var searchBusByFromTo = (function () {
         function searchBusByFromTo($scope, $http) {
+            $scope.busstops = [];
+            $http.jsonp("http://www9264ui.sakura.ne.jp/busstops/result_bts_lines?format=json&format=js&callback=JSON_CALLBACK").success(function (data) {
+                for(var i = 0; i < data.busstops.length; i++) {
+                    $scope.busstops.push(data.busstops[i].busstopname);
+                }
+            });
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
             $scope.startTime = "2000";

@@ -1,9 +1,34 @@
 ﻿/// <reference path="../typings/google.maps.d.ts" />
 /// <reference path="AngularTS/angular.d.ts" />
+/// <reference path="../typings/jquery.d.ts" />
+/// <reference path="../typings/jqueryui.d.ts" />
+
+angular.module('albus', []).directive('autoComplete', function () {
+    return function (scope, iElement, iAttrs) {
+        scope.$watch(iAttrs.uiItems, function (values) {
+            iElement.autocomplete({
+                source: values,
+                select: function () {
+                    setTimeout(function () {
+                        iElement.trigger('input');
+                    }, 0);
+                }
+            });
+
+        }, true);
+    };
+});
 
 module app {
     export class searchBusByFromTo {
         constructor($scope: any, $http: angular.HttpService) {
+            $scope.busstops = [];
+            $http.jsonp("http://www9264ui.sakura.ne.jp/busstops/result_bts_lines?format=json&format=js&callback=JSON_CALLBACK")
+            .success(data => {
+                for (var i = 0 ; i < data.busstops.length ; i++) {
+                    $scope.busstops.push(data.busstops[i].busstopname);
+                }
+            });
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
             $scope.startTime = "2000";
@@ -14,7 +39,7 @@ module app {
                     + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop)
                     + "&departure_datetime=20130226" + $scope.startTime
                     + "&format=js&callback=JSON_CALLBACK")
-                .success((data: any) => {
+                .success(data => {
                     $scope.resultDiagrams = [];
                     var s = data.diagrams[1].diagram.linename
                         + " "
@@ -27,7 +52,7 @@ module app {
                             + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop)
                             + "&departure_datetime=20130226" + (parseInt(data.diagrams[0].diagram.avltime, 10) + 1)
                             + "&format=js&callback=JSON_CALLBACK")
-                        .success((data: any) => {
+                        .success(data => {
                             var s = data.diagrams[1].diagram.linename
                                 + " "
                                 + data.diagrams[0].diagram.avltime

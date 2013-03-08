@@ -1,9 +1,10 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="albus">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>長野市バス検索</title>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css" />
     <style>
         body {
             padding:0.5em;
@@ -15,10 +16,10 @@
             <a href="http://www9264ui.sakura.ne.jp/yummy/?page_id=5" target="_blank">api仕様</a>
         </p>
         <p>
-            <span>出発バス停：</span><input type="text" placeholder="出発バス停" data-ng-model="fromBusStop" />
+            <span>出発バス停：</span><input type="text" placeholder="出発バス停" data-ng-model="fromBusStop" auto-complete ui-items="busstops" />
         </p>
         <p>
-            <span>到着バス停：</span><input type="text" placeholder="到着バス停" data-ng-model="toBusStop" />
+            <span>到着バス停：</span><input type="text" placeholder="到着バス停" data-ng-model="toBusStop" auto-complete ui-items="busstops" />
         </p>
         <p>
             <span>出発時刻　：</span><input type="text" placeholder="出発時刻" data-ng-model="startTime" />
@@ -31,6 +32,7 @@
             <li data-ng-repeat="diagram in resultDiagrams">{{diagram}}</li>
         </ul>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
         <script type="text/javascript" src="Scripts/app.js"></script>
