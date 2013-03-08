@@ -10,14 +10,38 @@ module app {
             $scope.resultDiagrams = [];
             $scope.search = () => {
                 $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?"
-                    + "start_busstopnm="  + encodeURIComponent($scope.fromBusStop)
+                    + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop)
                     + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop)
                     + "&departure_datetime=20130226" + $scope.startTime
                     + "&format=js&callback=JSON_CALLBACK")
-                .success((data:any) => {
-                    $scope.resultDiagrams = data.diagrams;
+                .success((data: any) => {
+                    $scope.resultDiagrams = [];
+                    var s = data.diagrams[1].diagram.linename
+                        + " "
+                        + data.diagrams[0].diagram.avltime
+                        + " ⇒ "
+                        + data.diagrams[1].diagram.avltime;
+                    $scope.resultDiagrams.push(s);
+                    $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?"
+                            + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop)
+                            + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop)
+                            + "&departure_datetime=20130226" + (parseInt(data.diagrams[0].diagram.avltime, 10) + 1)
+                            + "&format=js&callback=JSON_CALLBACK")
+                        .success((data: any) => {
+                            var s = data.diagrams[1].diagram.linename
+                                + " "
+                                + data.diagrams[0].diagram.avltime
+                                + " ⇒ "
+                                + data.diagrams[1].diagram.avltime;
+                            $scope.resultDiagrams.push(s);
+                        })
+                        .error((data: any) => {
+                            console.log("fail");
+                            console.log(data);
+                        });
+
                 })
-                .error((data:any) => {
+                .error((data: any) => {
                     console.log("fail");
                     console.log(data);
                 });

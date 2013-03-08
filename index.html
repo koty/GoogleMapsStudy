@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <title>長野市バス検索</title>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
     <style>
         body {
             padding:0.5em;
@@ -28,7 +28,7 @@
             <span>検索結果：</span>
         </p>
         <ul>
-            <li data-ng-repeat="diagram in resultDiagrams">{{diagram.diagram.avltime + " 発 ／ " + diagram.diagram.linename}}</li>
+            <li data-ng-repeat="diagram in resultDiagrams">{{diagram}}</li>
         </ul>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
