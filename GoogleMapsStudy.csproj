@@ -46,6 +46,7 @@
     <Content Include="bootstrap\img\glyphicons-halflings.png" />
     <Content Include="bootstrap\js\bootstrap.js" />
     <Content Include="bootstrap\js\bootstrap.min.js" />
+    <Content Include="gmap.html" />
     <Content Include="index.html" />
     <Content Include="Scripts\AngularTS\angular.d.ts" />
     <Content Include="Scripts\AngularTS\angularPublic.d.ts" />
@@ -68,7 +69,6 @@
     <Content Include="Scripts\app.min.js">
       <DependentUpon>app.ts</DependentUpon>
     </Content>
-    <Content Include="searchBusByFromTo.html" />
     <Content Include="typings\google.maps.d.ts" />
     <Content Include="Web.config" />
   </ItemGroup>
