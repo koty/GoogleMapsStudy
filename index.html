@@ -9,6 +9,11 @@
         body {
             padding:0.5em;
         }
+        span.label {
+            width: 6em;
+            text-align: right;
+            margin: 0.4em;
+        }
     </style>
 </head>
     <body data-ng-controller="app.searchBusByFromTo">
@@ -16,13 +21,13 @@
             <a href="http://www9264ui.sakura.ne.jp/yummy/?page_id=5" target="_blank">api仕様</a>
         </p>
         <p>
-            <span>出発バス停：</span><input type="text" placeholder="出発バス停" data-ng-model="fromBusStop" auto-complete ui-items="busstops" />
+            <span class="label">出発バス停：</span><input type="text" placeholder="出発バス停" data-ng-model="fromBusStop" data-auto-complete data-ui-items="busstops" />
         </p>
         <p>
-            <span>到着バス停：</span><input type="text" placeholder="到着バス停" data-ng-model="toBusStop" auto-complete ui-items="busstops" />
+            <span class="label">到着バス停：</span><input type="text" placeholder="到着バス停" data-ng-model="toBusStop" data-auto-complete data-ui-items="busstops" />
         </p>
         <p>
-            <span>出発時刻　：</span><input type="text" placeholder="出発時刻" data-ng-model="startTime" />
+            <span class="label">出発時刻：</span><input type="text" placeholder="出発時刻" data-ng-model="startTime" maxlength="4" />
         </p>
         <button data-ng-click="search()">検索！</button>
         <p>
