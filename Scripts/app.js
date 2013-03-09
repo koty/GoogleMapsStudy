@@ -1,4 +1,11 @@
-﻿angular.module('albus', []).directive('autoComplete', function () {
+﻿if(isSmartPhone()) {
+    document.body.style.fontSize = "20px";
+} else {
+}
+function isSmartPhone() {
+    return ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0);
+}
+angular.module('albus', []).directive('autoComplete', function () {
     return function (scope, iElement, iAttrs) {
         scope.$watch(iAttrs.uiItems, function (values) {
             iElement.autocomplete({
@@ -24,7 +31,7 @@ var app;
             });
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
-            $scope.startTime = "2000";
+            $scope.startTime = this.getNowTime();
             $scope.resultDiagrams = [];
             $scope.search = function () {
                 $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=20130226" + $scope.startTime + "&format=js&callback=JSON_CALLBACK").success(function (data) {
@@ -51,6 +58,21 @@ var app;
                 });
             };
         }
+        searchBusByFromTo.prototype.getNowTime = function () {
+            var Jikan = new Date();
+            var time = "";
+            var hour = Jikan.getHours();
+            if(hour < 10) {
+                time += "0";
+            }
+            time += hour.toString();
+            var minute = Jikan.getMinutes();
+            if(minute < 10) {
+                time += "0";
+            }
+            time += minute.toString();
+            return time;
+        };
         return searchBusByFromTo;
     })();
     app.searchBusByFromTo = searchBusByFromTo;    
