@@ -23,6 +23,7 @@ var app;
 (function (app) {
     var searchBusByFromTo = (function () {
         function searchBusByFromTo($scope, $http) {
+            var _this = this;
             $scope.busstops = [];
             $http.jsonp("http://www9264ui.sakura.ne.jp/busstops/result_bts_lines?format=json&format=js&callback=JSON_CALLBACK").success(function (data) {
                 for(var i = 0; i < data.busstops.length; i++) {
@@ -34,7 +35,7 @@ var app;
             $scope.startTime = this.getNowTime();
             $scope.resultDiagrams = [];
             $scope.search = function () {
-                $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=20130226" + $scope.startTime + "&format=js&callback=JSON_CALLBACK").success(function (data) {
+                $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=" + _this.getNowDate() + $scope.startTime + "&format=js&callback=JSON_CALLBACK").success(function (data) {
                     $scope.resultDiagrams = [];
                     var s = data.diagrams[1].diagram.linename + " " + data.diagrams[0].diagram.avltime + " ⇒ " + data.diagrams[1].diagram.avltime;
                     $scope.resultDiagrams.push(s);
@@ -45,7 +46,7 @@ var app;
                     } else {
                         t = time.toString();
                     }
-                    $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=20130226" + t + "&format=js&callback=JSON_CALLBACK").success(function (data) {
+                    $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=" + _this.getNowDate() + t + "&format=js&callback=JSON_CALLBACK").success(function (data) {
                         var s = data.diagrams[1].diagram.linename + " " + data.diagrams[0].diagram.avltime + " ⇒ " + data.diagrams[1].diagram.avltime;
                         $scope.resultDiagrams.push(s);
                     }).error(function (data) {
@@ -72,6 +73,23 @@ var app;
             }
             time += minute.toString();
             return time;
+        };
+        searchBusByFromTo.prototype.getNowDate = function () {
+            var Jikan = new Date();
+            var day = "";
+            var year = Jikan.getFullYear();
+            day += year.toString();
+            var month = Jikan.getMonth();
+            if(month < 10) {
+                day += "0";
+            }
+            day += month.toString();
+            var d = Jikan.getMonth();
+            if(d < 10) {
+                day += "0";
+            }
+            day += d.toString();
+            return day;
         };
         return searchBusByFromTo;
     })();

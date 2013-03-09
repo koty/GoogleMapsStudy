@@ -49,7 +49,7 @@ module app {
                 $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?"
                     + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop)
                     + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop)
-                    + "&departure_datetime=20130226" + $scope.startTime
+                    + "&departure_datetime=" + this.getNowDate() + $scope.startTime
                     + "&format=js&callback=JSON_CALLBACK")
                 .success(data => {
                     $scope.resultDiagrams = [];
@@ -69,7 +69,7 @@ module app {
                     $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?"
                             + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop)
                             + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop)
-                            + "&departure_datetime=20130226" + t
+                            + "&departure_datetime=" + this.getNowDate() + t
                             + "&format=js&callback=JSON_CALLBACK")
                         .success(data => {
                             var s = data.diagrams[1].diagram.linename
@@ -108,6 +108,25 @@ module app {
             time += minute.toString();
 
             return time;
+        }
+        private getNowDate(): string {
+            var Jikan = new Date();
+            var day = "";
+            //時・分・秒を取得する
+            var year = Jikan.getFullYear();
+            day += year.toString();
+            var month = Jikan.getMonth();
+            if (month < 10) {
+                day += "0"
+            }
+            day += month.toString();
+            var d = Jikan.getMonth();
+            if (d < 10) {
+                day += "0"
+            }
+            day += d.toString();
+
+            return day;
         }
     }
 
