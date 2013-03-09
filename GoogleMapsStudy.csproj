@@ -14,7 +14,7 @@
     <RootNamespace>GoogleMapsStudy</RootNamespace>
     <AssemblyName>GoogleMapsStudy</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -47,6 +47,8 @@
     <Content Include="bootstrap\js\bootstrap.js" />
     <Content Include="bootstrap\js\bootstrap.min.js" />
     <Content Include="gmap.html" />
+    <Content Include="Images\busstop.png" />
+    <Content Include="Images\male.png" />
     <Content Include="index.html" />
     <Content Include="Scripts\AngularTS\angular.d.ts" />
     <Content Include="Scripts\AngularTS\angularPublic.d.ts" />
@@ -70,6 +72,8 @@
       <DependentUpon>app.ts</DependentUpon>
     </Content>
     <Content Include="typings\google.maps.d.ts" />
+    <Content Include="typings\jquery.d.ts" />
+    <Content Include="typings\jqueryui.d.ts" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +104,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51067</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:81/GoogleMapsStudy</IISUrl>
+          <IISUrl>http://localhost:30969/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

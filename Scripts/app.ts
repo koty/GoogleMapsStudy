@@ -5,9 +5,8 @@
 
 if (isSmartPhone()) {
     document.body.style.fontSize = "20px";
-} else {
-
 }
+
 function isSmartPhone() {
     return ((navigator.userAgent.indexOf('iPhone') > 0
             && navigator.userAgent.indexOf('iPad') == -1)
@@ -32,8 +31,13 @@ angular.module('albus', []).directive('autoComplete', function () {
 });
 
 module app {
+
     export class searchBusByFromTo {
+        private map: google.maps.Map;
+        private currentPosMarker: google.maps.Marker;
+
         constructor($scope: any, $http: angular.HttpService) {
+            this.showMap($scope, $http);
             $scope.busstops = [];
             $http.jsonp("http://www9264ui.sakura.ne.jp/busstops/result_bts_lines?format=json&format=js&callback=JSON_CALLBACK")
             .success(data => {
@@ -127,6 +131,46 @@ module app {
             day += d.toString();
 
             return day;
+        }
+
+        private showMap($scope: any, $http: angular.HttpService) {
+            // 現在の位置情報を取得
+            var watchID = navigator.geolocation.watchPosition(
+                position => {
+                    var currentPos = new google.maps.LatLng(position.coords.latitude,
+                                                                position.coords.longitude);
+                    this.map.setCenter(currentPos);
+                    if (!this.currentPosMarker) {
+                        this.currentPosMarker = new google.maps.Marker({
+                            map: this.map,
+                            title: "現在地",
+                            icon: "Images/male.png"
+                        });
+                    }
+                    this.currentPosMarker.setPosition(currentPos);
+                },
+                error => {
+                    switch (error.code) {
+                        case 1:
+                            alert("位置情報の利用が許可されていません");
+                            break;
+                        case 2:
+                            alert("デバイスの位置が判定できません");
+                            break;
+                        case 3:
+                            alert("タイムアウトしました");
+                            break;
+                    }
+                },
+                { enableHighAccuracy: true }
+            );
+
+            var opts = {
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            this.map = new google.maps.Map(
+                    document.getElementById("map_canvas"), opts);
         }
     }
 

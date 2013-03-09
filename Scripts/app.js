@@ -1,6 +1,5 @@
 ﻿if(isSmartPhone()) {
     document.body.style.fontSize = "20px";
-} else {
 }
 function isSmartPhone() {
     return ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0);
@@ -24,6 +23,7 @@ var app;
     var searchBusByFromTo = (function () {
         function searchBusByFromTo($scope, $http) {
             var _this = this;
+            this.showMap($scope, $http);
             $scope.busstops = [];
             $http.jsonp("http://www9264ui.sakura.ne.jp/busstops/result_bts_lines?format=json&format=js&callback=JSON_CALLBACK").success(function (data) {
                 for(var i = 0; i < data.busstops.length; i++) {
@@ -90,6 +90,40 @@ var app;
             }
             day += d.toString();
             return day;
+        };
+        searchBusByFromTo.prototype.showMap = function ($scope, $http) {
+            var _this = this;
+            var watchID = navigator.geolocation.watchPosition(function (position) {
+                var currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                _this.map.setCenter(currentPos);
+                if(!_this.currentPosMarker) {
+                    _this.currentPosMarker = new google.maps.Marker({
+                        map: _this.map,
+                        title: "現在地",
+                        icon: "Images/male.png"
+                    });
+                }
+                _this.currentPosMarker.setPosition(currentPos);
+            }, function (error) {
+                switch(error.code) {
+                    case 1:
+                        alert("位置情報の利用が許可されていません");
+                        break;
+                    case 2:
+                        alert("デバイスの位置が判定できません");
+                        break;
+                    case 3:
+                        alert("タイムアウトしました");
+                        break;
+                }
+            }, {
+                enableHighAccuracy: true
+            });
+            var opts = {
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            this.map = new google.maps.Map(document.getElementById("map_canvas"), opts);
         };
         return searchBusByFromTo;
     })();
