@@ -35,6 +35,7 @@ module app {
     export class searchBusByFromTo {
         private map: google.maps.Map;
         private currentPosMarker: google.maps.Marker;
+        private busstopList;
 
         constructor($scope: any, $http: angular.HttpService) {
             this.showMap($scope, $http);
@@ -44,6 +45,8 @@ module app {
                 for (var i = 0 ; i < data.busstops.length ; i++) {
                     $scope.busstops.push(data.busstops[i].busstopname);
                 }
+                this.busstopList = data.busstops;
+                this.putMarkers();
             });
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
@@ -93,7 +96,51 @@ module app {
                     console.log("fail");
                     console.log(data);
                 });
+
+                this.map.addListener("center_changed", () => {
+                    //イベント発生ごとに必ず配置しなおすと重くならないかな？
+                    //mapが表示している範囲のバス停を表示する。
+                });
             }
+        }
+
+        private putMarkers() {
+            for (var i = 0 ; i < this.busstopList.length ; i++) {
+                if (!this.busstopList[i].marker) {
+                    this.busstopList[i].marker = this.putMarker(this.busstopList[i]);
+
+                    //範囲内なら表示
+                    //this.busstopList[i].marker
+                    //this.busstopList[i].marker.setVisible(true);
+                }
+            }
+        }
+
+        private activeInfoWindow: google.maps.InfoWindow;
+
+        private putMarker(busstop): google.maps.Marker {
+            var marker = new google.maps.Marker({
+                map: this.map,
+                title: busstop.busstopname,
+                position: new google.maps.LatLng(busstop.gps1,
+                                                 busstop.gps2),
+                icon: "Images/busstop.png"
+            });
+            var infowindow = new google.maps.InfoWindow({
+                content: "<p>" + busstop.busstopname + "</p>"
+                     + "<button disabled='disabled' onclick=\"$('#id_fromBusStop').val('" + busstop.busstopname + "'); \">乗車</button>"
+                     + "<button disabled='disabled' onclick=\"$('#id_toBusStop'  ).val('" + busstop.busstopname + "'); \">降車</button>"
+            });
+
+            google.maps.event.addListener(marker, 'click', () => {
+                if (this.activeInfoWindow) {
+                    this.activeInfoWindow.close();
+                }
+                infowindow.open(this.map, marker);
+                this.activeInfoWindow = infowindow;
+            });
+
+            return marker;
         }
 
         private getNowTime(): string {
@@ -172,58 +219,13 @@ module app {
             this.map = new google.maps.Map(
                     document.getElementById("map_canvas"), opts);
         }
-    }
 
-    export class s {
-        public static initialize(): void {
-            var latlng = new google.maps.LatLng(35.630442, 139.882951);
-            var opts = {
-                zoom: 15,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var map = new google.maps.Map(
-                    document.getElementById("map_canvas"), opts);
-
-            var m_latlng1: google.maps.LatLng = new google.maps.LatLng(35.632605, 139.88132);
-            var marker1: google.maps.Marker = new google.maps.Marker({
-                position: m_latlng1,
-                map: map,
-                title: "デズニーランド（行ったことない）"
-            });
-
-            var m_latlng2: google.maps.LatLng = new google.maps.LatLng(35.625663, 139.884238);
-            var marker2: google.maps.Marker = new google.maps.Marker({
-                position: m_latlng2,
-                map: map,
-                title: "デズニーシー（行ったことない）"
-            });
-
-
-            //吹き出しを作成します
-            var contentString = '吹き出しを設置してみました。</br>' +
-                '×ボタンで閉じてもマーカーをクリックすればまた開きます。';
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString  //吹き出し内コメント
-            });
-
-            //クリックしたときに吹き出しがオープンするイベントを定義します
-            google.maps.event.addListener(marker1, 'click', function () {
-                infowindow.open(map, marker1);
-            });
-
-            var kmlUrl = "https://maps.google.co.jp/maps/ms?hl=ja&ie=UTF8&brcurrent=3,0x601d805de6344499:0xf128a974072892c8,0&source=embed&authuser=0&msa=0&output=kml&msid=212296178296913481694.00049901c136c56005a6e";
-            var kmlLayer = new google.maps.KmlLayer(kmlUrl);
-            kmlLayer.setMap(map);
-
-            google.maps.event.addListener(kmlLayer, 'click', function (kmlEvent) {
-                var text = kmlEvent.featureData.description;
-                showInDiv(text);
-            });
-
-            function showInDiv(text) {
-                var sidediv = document.getElementById('contentWindow');
-                sidediv.innerHTML = text;
+        public static toggleMap(): void {
+            var $map = $('#map_canvas');
+            if ($map.css('display') === 'none') {
+                $map.css('display', 'block');
+            } else {
+                $map.css('display', 'none');
             }
         }
     }

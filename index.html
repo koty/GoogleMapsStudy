@@ -20,36 +20,46 @@
     </style>
 </head>
     <body data-ng-controller="app.searchBusByFromTo">
-        <p style="font-size:1.4em;">
-            バス検索apiを利用させていただいています。<a href="http://www9264ui.sakura.ne.jp/yummy/?page_id=5" target="_blank">api仕様</a>
-        </p>
-        <p style="font-size:1.4em;">
-            <a href="https://play.google.com/store/apps/details?id=com.rhomobile.albus" target="_blank">本家のページ</a>
-        </p>
-        <p style="font-size:1.4em;">
-            この画面の作者：<a href="http://twitter.com/koty">@koty</a>
-        </p>
-        <p>
-            <span class="label">出発バス停：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" placeholder="出発バス停" data-ng-model="fromBusStop" data-auto-complete data-ui-items="busstops" />
-        </p>
-        <p>
-            <span class="label">到着バス停：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" placeholder="到着バス停" data-ng-model="toBusStop" data-auto-complete data-ui-items="busstops" />
-        </p>
-        <p>
-            <span class="label">出発時刻：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" placeholder="出発時刻" data-ng-model="startTime" maxlength="4" />
-        </p>
-        <button style="height: 2.2em;width:12.1em;font-size:2em;margin-left:0.4em;" data-ng-click="search()">検索！</button>
-        <p style="margin:1em;">
-            <span style="font-size: 1.4em;">検索結果：</span>
-        </p>
-        <ul style="font-size:2em;">
-            <li style="margin:0.8em;" data-ng-repeat="diagram in resultDiagrams">{{diagram}}</li>
-        </ul>
+        <div class="container">
+            <div class="row">
+                <div class="span8">
+                    <p style="font-size:1.4em;">
+                        バス検索apiを利用させていただいています。<a href="http://www9264ui.sakura.ne.jp/yummy/?page_id=5" target="_blank">api仕様</a>
+                    </p>
+                    <p style="font-size:1.4em;">
+                        <a href="https://play.google.com/store/apps/details?id=com.rhomobile.albus" target="_blank">本家のページ</a>
+                    </p>
+                    <p style="font-size:1.4em;">
+                        この画面の作者：<a href="http://twitter.com/koty">@koty</a>
+                    </p>
+                    <p>
+                        <span class="label">出発バス停：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" id="id_fromBusStop" placeholder="出発バス停" data-ng-model="fromBusStop" data-auto-complete data-ui-items="busstops" />
+                    </p>
+                    <p>
+                        <span class="label">到着バス停：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" id="id_toBusStop" placeholder="到着バス停" data-ng-model="toBusStop" data-auto-complete data-ui-items="busstops" />
+                    </p>
+                    <p>
+                        <span class="label">出発時刻：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" placeholder="出発時刻" data-ng-model="startTime" maxlength="4" />
+                    </p>
+                    <button style="height: 2.2em;width:12.1em;font-size:2em;margin-left:0.4em;" data-ng-click="search()">検索！</button>
+                    <p style="margin:1em;">
+                        <span style="font-size: 1.4em;">検索結果：</span>
+                    </p>
+                    <ul style="font-size:2em;">
+                        <li style="margin:0.8em;" data-ng-repeat="diagram in resultDiagrams">{{diagram}}</li>
+                    </ul>
+                    <p>
+                        <button onclick="app.searchBusByFromTo.toggleMap();">地図表示切替</button>
+                    </p>
 
-        <div id="map_canvas" style="width:700px; height:500px"></div>
-
-        <a class="twitter-timeline" href="https://twitter.com/albusizumi" data-widget-id="310166718955782144">Tweets by @albusizumi</a>
-        <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
+                    <div id="map_canvas" style="width:400px; height:300px"></div>
+                </div>
+                <div class="span4">
+                    <a class="twitter-timeline" href="https://twitter.com/albusizumi" data-widget-id="310166718955782144">Tweets by @albusizumi</a>
+                    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = "//platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
+                </div>
+            </div>
+        </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>

@@ -38,14 +38,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="bootstrap\css\bootstrap-responsive.css" />
-    <Content Include="bootstrap\css\bootstrap-responsive.min.css" />
-    <Content Include="bootstrap\css\bootstrap.css" />
-    <Content Include="bootstrap\css\bootstrap.min.css" />
-    <Content Include="bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="bootstrap\js\bootstrap.js" />
-    <Content Include="bootstrap\js\bootstrap.min.js" />
     <Content Include="gmap.html" />
     <Content Include="Images\busstop.png" />
     <Content Include="Images\male.png" />
