@@ -37,6 +37,7 @@
                     </p>
                     <p>
                         <span class="label">到着バス停：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" id="id_toBusStop" placeholder="到着バス停" data-ng-model="toBusStop" data-auto-complete data-ui-items="busstops" />
+                        <button style="height: 2em;width:6em;font-size:2em;margin-left:0.4em;" data-ng-click="swapBusstop()">発着を入替</button>
                     </p>
                     <p>
                         <span class="label">出発時刻：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" placeholder="出発時刻" data-ng-model="startTime" maxlength="4" />

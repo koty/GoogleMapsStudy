@@ -52,6 +52,11 @@ module app {
             $scope.toBusStop = "五分一西";
             $scope.startTime = this.getNowTime();
             $scope.resultDiagrams = [];
+            $scope.swapBusstop = () => {
+                var tmp = $scope.toBusStop;
+                $scope.toBusStop = $scope.fromBusStop;
+                $scope.fromBusStop = tmp;
+            };
             $scope.search = () => {
                 $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?"
                     + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop)

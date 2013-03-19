@@ -36,6 +36,11 @@ var app;
             $scope.toBusStop = "五分一西";
             $scope.startTime = this.getNowTime();
             $scope.resultDiagrams = [];
+            $scope.swapBusstop = function () {
+                var tmp = $scope.toBusStop;
+                $scope.toBusStop = $scope.fromBusStop;
+                $scope.fromBusStop = tmp;
+            };
             $scope.search = function () {
                 $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=" + _this.getNowDate() + $scope.startTime + "&format=js&callback=JSON_CALLBACK").success(function (data) {
                     $scope.resultDiagrams = [];
