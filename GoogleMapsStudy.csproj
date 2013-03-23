@@ -38,10 +38,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="gmap.html" />
     <Content Include="Images\busstop.png" />
     <Content Include="Images\male.png" />
     <Content Include="index.html" />
+    <Content Include="Scripts\angular-ui\angular-ui.min.css" />
+    <Content Include="Scripts\angular-ui\angular-ui.min.js" />
+    <Content Include="Scripts\angular-ui\common\module.js" />
     <Content Include="Scripts\AngularTS\angular.d.ts" />
     <Content Include="Scripts\AngularTS\angularPublic.d.ts" />
     <Content Include="Scripts\AngularTS\auto\injector.d.ts" />

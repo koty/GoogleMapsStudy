@@ -4,7 +4,9 @@
 function isSmartPhone() {
     return ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0);
 }
-angular.module('albus', []).directive('autoComplete', function () {
+angular.module('albus', [
+    'ui'
+]).directive('autoComplete', function () {
     return function (scope, iElement, iAttrs) {
         scope.$watch(iAttrs.uiItems, function (values) {
             iElement.autocomplete({
@@ -25,12 +27,13 @@ var app;
             var _this = this;
             this.showMap($scope, $http);
             $scope.busstops = [];
+            $scope.busstopMarkers = [];
             $http.jsonp("http://www9264ui.sakura.ne.jp/busstops/result_bts_lines?format=json&format=js&callback=JSON_CALLBACK").success(function (data) {
                 for(var i = 0; i < data.busstops.length; i++) {
                     $scope.busstops.push(data.busstops[i].busstopname);
                 }
                 _this.busstopList = data.busstops;
-                _this.putMarkers();
+                _this.putMarkers($scope);
             });
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
@@ -41,58 +44,74 @@ var app;
                 $scope.toBusStop = $scope.fromBusStop;
                 $scope.fromBusStop = tmp;
             };
+            $scope.setFromBusStop = function ($event) {
+                $scope.fromBusStop = $scope.currentMarker.title;
+            };
+            $scope.setToBusStop = function ($event) {
+                $scope.toBusStop = $scope.currentMarker.title;
+            };
+            $scope.openMarkerInfo = function (marker) {
+                $scope.currentMarker = marker;
+                $scope.busstopInfoWindow.open($scope.myMap, marker);
+            };
+            $scope.mapOptions = {
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
             $scope.search = function () {
-                $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=" + _this.getNowDate() + $scope.startTime + "&format=js&callback=JSON_CALLBACK").success(function (data) {
-                    $scope.resultDiagrams = [];
-                    var s = data.diagrams[1].diagram.linename + " " + data.diagrams[0].diagram.avltime + " ⇒ " + data.diagrams[1].diagram.avltime;
-                    $scope.resultDiagrams.push(s);
-                    var time = (parseInt(data.diagrams[0].diagram.avltime, 10) + 1);
-                    var t = "";
-                    if(time < 1000) {
-                        t = "0" + time;
-                    } else {
-                        t = time.toString();
-                    }
-                    $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=" + _this.getNowDate() + t + "&format=js&callback=JSON_CALLBACK").success(function (data) {
-                        var s = data.diagrams[1].diagram.linename + " " + data.diagrams[0].diagram.avltime + " ⇒ " + data.diagrams[1].diagram.avltime;
-                        $scope.resultDiagrams.push(s);
-                    }).error(function (data) {
-                        console.log("fail");
-                        console.log(data);
-                    });
+                _this.searchBusStop($scope, $http);
+            };
+        }
+        searchBusByFromTo.prototype.searchBusStop = function ($scope, $http) {
+            var _this = this;
+            $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=" + this.getNowDate() + $scope.startTime + "&format=js&callback=JSON_CALLBACK").success(function (data) {
+                $scope.resultDiagrams = [];
+                $scope.resultDiagrams.push(_this.formatResult(data.diagrams));
+                var time = (parseInt(data.diagrams[0].diagram.avltime, 10) + 1);
+                var t = _this.padZero(time);
+                $http.jsonp("http://www9264ui.sakura.ne.jp/diagrams/result?" + "start_busstopnm=" + encodeURIComponent($scope.fromBusStop) + "&arrival_busstopnm=" + encodeURIComponent($scope.toBusStop) + "&departure_datetime=" + _this.getNowDate() + t + "&format=js&callback=JSON_CALLBACK").success(function (data) {
+                    $scope.resultDiagrams.push(_this.formatResult(data.diagrams));
                 }).error(function (data) {
                     console.log("fail");
                     console.log(data);
                 });
-                _this.map.addListener("center_changed", function () {
-                });
+            }).error(function (data) {
+                console.log("fail");
+                console.log(data);
+            });
+        };
+        searchBusByFromTo.prototype.formatResult = function (diagrams) {
+            return {
+                linename: diagrams[1].diagram.linename,
+                from: this.formatTime(diagrams[0].diagram.avltime),
+                to: this.formatTime(diagrams[1].diagram.avltime)
             };
-        }
-        searchBusByFromTo.prototype.putMarkers = function () {
+        };
+        searchBusByFromTo.prototype.formatTime = function (t) {
+            return t.substring(2, 0) + ":" + t.substring(4, 2);
+        };
+        searchBusByFromTo.prototype.padZero = function (num) {
+            if(num < 1000) {
+                return "0" + num;
+            } else {
+                return num.toString();
+            }
+        };
+        searchBusByFromTo.prototype.putMarkers = function ($scope) {
             for(var i = 0; i < this.busstopList.length; i++) {
                 if(!this.busstopList[i].marker) {
-                    this.busstopList[i].marker = this.putMarker(this.busstopList[i]);
+                    this.busstopList[i].marker = this.putMarker(this.busstopList[i], $scope);
                 }
             }
         };
-        searchBusByFromTo.prototype.putMarker = function (busstop) {
-            var _this = this;
+        searchBusByFromTo.prototype.putMarker = function (busstop, $scope) {
             var marker = new google.maps.Marker({
-                map: this.map,
+                map: $scope.myMap,
                 title: busstop.busstopname,
                 position: new google.maps.LatLng(busstop.gps1, busstop.gps2),
                 icon: "Images/busstop.png"
             });
-            var infowindow = new google.maps.InfoWindow({
-                content: "<p>" + busstop.busstopname + "</p>" + "<button disabled='disabled' onclick=\"$('#id_fromBusStop').val('" + busstop.busstopname + "'); \">乗車</button>" + "<button disabled='disabled' onclick=\"$('#id_toBusStop'  ).val('" + busstop.busstopname + "'); \">降車</button>"
-            });
-            google.maps.event.addListener(marker, 'click', function () {
-                if(_this.activeInfoWindow) {
-                    _this.activeInfoWindow.close();
-                }
-                infowindow.open(_this.map, marker);
-                _this.activeInfoWindow = infowindow;
-            });
+            $scope.busstopMarkers.push(marker);
             return marker;
         };
         searchBusByFromTo.prototype.getNowTime = function () {
@@ -131,10 +150,10 @@ var app;
             var _this = this;
             var watchID = navigator.geolocation.watchPosition(function (position) {
                 var currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                _this.map.setCenter(currentPos);
+                $scope.myMap.setCenter(currentPos);
                 if(!_this.currentPosMarker) {
                     _this.currentPosMarker = new google.maps.Marker({
-                        map: _this.map,
+                        map: $scope.myMap,
                         title: "現在地",
                         icon: "Images/male.png"
                     });
@@ -155,11 +174,6 @@ var app;
             }, {
                 enableHighAccuracy: true
             });
-            var opts = {
-                zoom: 15,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            this.map = new google.maps.Map(document.getElementById("map_canvas"), opts);
         };
         searchBusByFromTo.toggleMap = function toggleMap() {
             var $map = $('#map_canvas');

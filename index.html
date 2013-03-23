@@ -1,10 +1,11 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="albus">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>長野市バス検索</title>
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" />
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css" />
+    <link rel="stylesheet" href="Scripts/angular-ui/angular-ui.min.css" />
     <style>
         body {
             padding:0.5em;
@@ -17,7 +18,19 @@
             font-size: 2em;
             line-height: 1.5em;
         }
+        th, td {
+            font-size: 2em;
+            padding: 0.5em;
+        }
     </style>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
+        <script src="//maps.google.com/maps/api/js?sensor=true"></script>
+        <script src="Scripts/angular-ui/angular-ui.min.js"></script>
+        <script src="Scripts/app.js"></script>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -59,14 +72,33 @@
                     <p style="margin:1em;">
                         <span style="font-size: 1.4em;">検索結果：</span>
                     </p>
-                    <ul style="font-size:2em;">
-                        <li style="margin:0.8em;" data-ng-repeat="diagram in resultDiagrams">{{diagram}}</li>
-                    </ul>
+                    <table>
+                        <thead><tr><th>路線</th><th>乗車時刻</th><th></th><th>降車時刻</th></tr></thead>
+                        <tbody>
+                            <tr data-ng-repeat="diagram in resultDiagrams">
+                                <td>{{diagram.linename}}</td><td>{{diagram.from}}</td><td>→</td><td>{{diagram.to}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <p>
                         <button onclick="app.searchBusByFromTo.toggleMap();">地図表示切替</button>
                     </p>
-
-                    <div id="map_canvas" style="width:400px; height:300px"></div>
+                    
+                    <!-- map body -->
+                    <div id="map_canvas" style="height:300px;"
+                         data-ui-map="myMap" data-ui-options="mapOptions"
+                         data-ui-event="{'map-click': 'mapClick($event)'}"></div>
+                    <!--for marker-->
+					<div data-ng-repeat="marker in busstopMarkers" data-ui-map-marker="busstopMarkers[$index]"
+						data-ui-event="{'map-click': 'openMarkerInfo(marker)'}">
+					</div>
+                    <!--infowindow-->
+					<div data-ui-map-info-window="busstopInfoWindow">
+					    <h1>{{currentMarker.title}}</h1>
+						<button data-ng-click="setFromBusStop($event)">乗車</button>
+						<button data-ng-click="setToBusStop($event)">降車</button>
+					</div>
+         
                 </div>
                 <div class="span4">
                     <a class="twitter-timeline" href="https://twitter.com/albusizumi" data-widget-id="310166718955782144">Tweets by @albusizumi</a>
@@ -74,12 +106,5 @@
                 </div>
             </div>
         </div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
-        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.3/angular.min.js"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-        <script type="text/javascript" src="Scripts/app.js"></script>
     </body>
 </html>
