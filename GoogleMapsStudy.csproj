@@ -75,6 +75,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include=".gitignore" />
+    <Content Include="README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
