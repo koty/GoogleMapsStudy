@@ -1,9 +1,12 @@
-﻿if(isSmartPhone()) {
-    document.body.style.fontSize = "20px";
-}
-function isSmartPhone() {
-    return ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0);
-}
+﻿$(function () {
+    if(isSmartPhone()) {
+        document.body.style.fontSize = "20px";
+        document.body.style.padding = "3px";
+    }
+    function isSmartPhone() {
+        return ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0);
+    }
+});
 angular.module('albus', [
     'ui'
 ]).directive('autoComplete', function () {
