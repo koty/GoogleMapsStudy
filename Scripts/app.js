@@ -1,7 +1,6 @@
 ﻿$(function () {
     if(isSmartPhone()) {
-        document.body.style.fontSize = "20px";
-        document.body.style.padding = "3px";
+        app.searchBusByFromTo.Changecss('smartphone');
     }
     function isSmartPhone() {
         return ((navigator.userAgent.indexOf('iPhone') > 0 && navigator.userAgent.indexOf('iPad') == -1) || navigator.userAgent.indexOf('iPod') > 0 || navigator.userAgent.indexOf('Android') > 0);
@@ -100,6 +99,9 @@ var app;
             };
         };
         searchBusByFromTo.prototype.formatTime = function (t) {
+            if(t.length < 4) {
+                t = " " + t;
+            }
             return t.substring(2, 0) + ":" + t.substring(4, 2);
         };
         searchBusByFromTo.prototype.padZero = function (num) {
@@ -215,6 +217,17 @@ var app;
                 $map.css('display', 'block');
             } else {
                 $map.css('display', 'none');
+            }
+        };
+        searchBusByFromTo.Changecss = function Changecss(ttl) {
+            var i, lnklst;
+            for(i = 0; (lnklst = document.getElementsByTagName("link")[i]); i++) {
+                if(lnklst.getAttribute("rel").indexOf("stylesheet") && lnklst.getAttribute("title")) {
+                    lnklst.disabled = true;
+                    if(lnklst.getAttribute("title") == ttl) {
+                        lnklst.disabled = false;
+                    }
+                }
             }
         };
         return searchBusByFromTo;

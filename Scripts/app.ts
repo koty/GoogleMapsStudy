@@ -5,8 +5,7 @@
 
 $(function () {
     if (isSmartPhone()) {
-        document.body.style.fontSize = "20px";
-        document.body.style.padding = "3px";
+        app.searchBusByFromTo.Changecss('smartphone');
     }
     function isSmartPhone() {
         return ((navigator.userAgent.indexOf('iPhone') > 0
@@ -128,6 +127,8 @@ module app {
             };
         }
         private formatTime(t: string): string {
+            if (t.length < 4)
+                t = " " + t;
             return t.substring(2, 0) + ":" + t.substring(4, 2);
         }
         private padZero(num: number): string {
@@ -258,6 +259,17 @@ module app {
                 $map.css('display', 'block');
             } else {
                 $map.css('display', 'none');
+            }
+        }
+
+        //http://www7a.biglobe.ne.jp/~mkun/css/css_JavaScript.htm
+        public static Changecss(ttl) {
+            var i, lnklst;
+            for (i = 0; (lnklst = document.getElementsByTagName("link")[i]); i++) {
+                if (lnklst.getAttribute("rel").indexOf("stylesheet") && lnklst.getAttribute("title")) {
+                    lnklst.disabled = true;
+                    if (lnklst.getAttribute("title") == ttl) lnklst.disabled = false;
+                }
             }
         }
     }
