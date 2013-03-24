@@ -38,6 +38,11 @@ var app;
                 _this.busstopList = data.busstops;
                 _this.putMarkers($scope);
             });
+            $scope.searchHistories = this.getSearchHistories();
+            $scope.historiesDDLChanged = function (selectedItem) {
+                $scope.fromBusStop = selectedItem.fromBusStop;
+                $scope.toBusStop = selectedItem.toBusStop;
+            };
             $scope.fromBusStop = "昭和通り";
             $scope.toBusStop = "五分一西";
             $scope.startTime = this.getNowTime();
@@ -81,6 +86,10 @@ var app;
             }).error(function (data) {
                 console.log("fail");
                 console.log(data);
+            });
+            this.putSearchHistories($scope.searchHistories, {
+                fromBusStop: $scope.fromBusStop,
+                toBusStop: $scope.toBusStop
             });
         };
         searchBusByFromTo.prototype.formatResult = function (diagrams) {
@@ -148,6 +157,28 @@ var app;
             }
             day += d.toString();
             return day;
+        };
+        searchBusByFromTo.prototype.getSearchHistories = function () {
+            var historiesJSON = localStorage.getItem("searchhistories");
+            if(!historiesJSON) {
+                return [];
+            }
+            var histories = JSON.parse(historiesJSON);
+            return histories;
+        };
+        searchBusByFromTo.prototype.putSearchHistories = function (histories, currentData) {
+            for(var i = 0; i < histories.length; i++) {
+                if(currentData.fromBusStop == histories[i].fromBusStop && currentData.toBusStop == histories[i].toBusStop) {
+                    return;
+                }
+            }
+            if(histories.length > 5) {
+                histories.shift();
+            }
+            currentData.val = currentData.fromBusStop + " → " + currentData.toBusStop;
+            histories.push(currentData);
+            var historiesJSON = JSON.stringify(histories);
+            localStorage.setItem("searchhistories", historiesJSON);
         };
         searchBusByFromTo.prototype.showMap = function ($scope, $http) {
             var _this = this;

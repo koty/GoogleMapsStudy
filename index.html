@@ -60,6 +60,8 @@
                     </p>
                     <p>
                         <span class="label">出発バス停：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" id="id_fromBusStop" placeholder="出発バス停" data-ng-model="fromBusStop" data-auto-complete data-ui-items="busstops" />
+                        <span class="label">履歴：</span>
+                        <select style="width:10em;" data-ng-change="historiesDDLChanged(selectedHistory)" data-ng-model="selectedHistory" data-ng-options="i.val for i in searchHistories"></select>
                     </p>
                     <p>
                         <span class="label">到着バス停：</span><input style="font-size: 2em;height:1.4em;line-height: 1.4em;" type="text" id="id_toBusStop" placeholder="到着バス停" data-ng-model="toBusStop" data-auto-complete data-ui-items="busstops" />
