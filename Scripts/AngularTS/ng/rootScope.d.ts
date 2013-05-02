@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     interface ScopeEvent {
         targetScope: Scope;
         currentScope: Scope;

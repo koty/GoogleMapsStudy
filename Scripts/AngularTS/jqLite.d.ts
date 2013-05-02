@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     function element(element: string): jqLite;
     function element(element: jqLite): jqLite;
     function element(element: Element): jqLite;

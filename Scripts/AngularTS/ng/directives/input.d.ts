@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     interface NgModelController {
         $viewValue: string;
         $modelValue: any;

@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     function module(name: string): Module;
     function module(name: string, requires: string[]): Module;
     function module(name: string, requires: string[], configFn: Function): Module;

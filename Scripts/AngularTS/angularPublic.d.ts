@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     function bootstrap(element: Element, modules: any[]): any;
     function forEach(array: any[], iterator: (item: any) => void );
     function forEach(array: Object, iterator: (value: any, key: string) => void );

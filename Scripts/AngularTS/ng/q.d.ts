@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     interface Promise {
         then(callback: Function, errback?: Function): Promise;
     }

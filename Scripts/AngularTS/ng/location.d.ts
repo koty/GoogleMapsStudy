@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     interface LocationProvider {
         get(): LocationService;
 

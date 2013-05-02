@@ -1,4 +1,4 @@
-module angular {
+declare module angular {
     interface Injector {
         get(name: string): any;
         invoke(fn: Function, self?: any, locals?: Object): any;

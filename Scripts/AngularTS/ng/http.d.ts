@@ -1,6 +1,6 @@
 /// <reference path="q.d.ts" />
 
-module angular {
+declare module angular {
     interface HttpDefaults {
         transformResponse(data: any): any;
         transformRequest(d: any): string;

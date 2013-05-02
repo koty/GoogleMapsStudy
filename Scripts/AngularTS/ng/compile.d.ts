@@ -1,7 +1,7 @@
 /// <reference path="../jqLite.d.ts" />
 /// <reference path="rootScope.d.ts" />
 
-module angular {
+declare module angular {
     interface Attributes {
         $normalize(name: string): string;
         $set(key: string, value: string, writeAttr?: bool, attrName?: string): void;
